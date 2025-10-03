@@ -1,50 +1,31 @@
-// 1. Importar las librerías necesarias
-var express = require('express');
-var socket = require('socket.io');
+const express = require('express');
+const socketIO = require('socket.io');
+const app = express();
 
-// 2. Configuración de la aplicación Express
-var app = express();
-
-// 3. Inicializar el servidor y escuchar en el puerto 5001
-var server = app.listen(4000, function(){
-    console.log('Servidor corriendo en http://3.22.186.213
-:4000');
-});
-
-// 4. Servir archivos estáticos (HTML, CSS, JS del cliente)
-// Asume que la carpeta del cliente (donde está el index.html) se llama 'public'
 app.use(express.static('public'));
 
-// 5. Configurar Socket.IO para trabajar con el servidor Express
-// -------------------------------------------------------------
-// CORRECCIÓN CLAVE: Agregar la configuración 'cors' para permitir cualquier origen ('*')
-var io = socket(server, {
-    cors: {
-        origin: "*", // Permite la conexión desde cualquier dominio/IP
-        methods: ["GET", "POST"] // Permite los métodos necesarios para el handshake
-    }
+const server = app.listen(4000, '0.0.0.0', () => {
+    console.log('Server running on http://3.22.186.213:4000');
 });
-// -------------------------------------------------------------
 
-// 6. Manejo de Eventos de Conexión de Socket.IO
-io.on('connection', function(socket){
-    // Este código se ejecuta cada vez que un nuevo cliente se conecta
-    console.log('Hay una conexion', socket.id);
+const io = socketIO(server);
 
-    // ********** MANEJO DE EVENTOS DEL CHAT **********
+io.on('connection', (socket) => {
+    console.log('Nueva conexión:', socket.id);
 
-    // A. Evento 'chat': Recepción de un mensaje del cliente
-    socket.on('chat', function(data){
-        console.log(data); // Opcional: registrar el mensaje en el servidor
-        
-        // io.sockets.emit: Envía el mensaje 'chat' a *todos* los clientes conectados
-        io.sockets.emit('chat', data);
+    // Escuchar mensajes del cliente
+    socket.on('chat message', (data) => {
+        console.log('Mensaje recibido:', data);
+        // Emitir a todos los clientes
+        io.sockets.emit('chat message', {
+            user: socket.id,
+            text: data,
+            time: new Date().toLocaleTimeString()
+        });
     });
 
-    // B. Evento 'typing': Notificación de que un cliente está escribiendo
-    socket.on('typing', function(data){
-        // socket.broadcast.emit: Envía el evento 'typing' a *todos menos al que lo envió*
+    // Escuchar cuando el usuario escribe
+    socket.on('typing', (data) => {
         socket.broadcast.emit('typing', data);
     });
-
 });
