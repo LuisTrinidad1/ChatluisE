@@ -1,4 +1,5 @@
-var socket = io.connect('http://localhost:4000');
+var socket = io.connect('http://3.22.186.213
+:4000');
 console.log("Conectado al servidor...");
 
 var sonidoRecibido = new Audio('sounds/mensaje-recibido.mp3');
