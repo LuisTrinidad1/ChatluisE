@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto de Comunicación con Sockets - Luis Eduardo</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"> </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Nunito", "Georgia", serif;
+            background: linear-gradient(135deg, #e6ecf5, #ffffff);
+            color: #1e2a38;  
+        }
+
+        header {
+            background-color: #1e3d59;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        #panel-bienvenida, #app-chat {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-family: "Georgia", serif;
+            font-weight: bold;
+            color: #1e3d59;
+        }
+
+        input, button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        input {
+            width: calc(100% - 22px);
+            border: 1px solid #aaa;
+            border-radius: 6px;
+        }
+
+        button {
+            background-color: #1e3d59;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #294b70;
+        }
+
+        #app-chat {
+            display: none;
+        }
+
+        .chat-area {
+            height: 300px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+   <header>
+        <h2>Proyecto de Comunicación con Sockets - Luis Eduardo</h2>
+    </header>
+
+    <div id="panel-bienvenida">
+        <h3>Bienvenido al sistema de chat académico</h3>
+        <input id="persona" type="text" placeholder="Ingresa tu nombre completo">
+        <button id="ingresar">Ingresar al chat</button>
+    </div>
+
+    <div id="app-chat" style="display:none;">
+        <input id="usuario" type="hidden"> <!-- Nombre del usuario oculto -->
+
+        <h3>Chat en tiempo real</h3>
+
+        <div id="ventana-mensajes" class="chat-area"></div>
+
+        <div id="escribiendo-mensaje"></div>
+
+        <input id="output" type="text" placeholder="Escribe tu mensaje aquí">
+        <button id="enviar">Enviar</button>
+        </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>
